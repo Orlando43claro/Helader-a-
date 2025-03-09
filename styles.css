@@ -41,25 +41,15 @@ header {
 /* Menú */
 .menu-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
-  justify-content: center;
   margin-top: 20px;
 }
 
-.menu-vertical, .menu-horizontal {
+.menu-row {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.menu-horizontal {
-  flex-direction: row;
-  overflow-x: auto;
-}
-
-.menu-horizontal::-webkit-scrollbar {
-  display: none;
+  gap: 15px;
+  justify-content: center;
 }
 
 .menu-item {
@@ -71,10 +61,11 @@ header {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;
   text-align: center;
+  width: 150px; /* Ancho fijo */
 }
 
 .menu-item img {
-  width: 150px;
+  width: 100%;
   height: 150px;
   object-fit: cover;
   border-radius: 10px;
