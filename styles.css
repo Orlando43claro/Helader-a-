@@ -47,30 +47,53 @@ header {
   margin-top: 20px;
 }
 
-.menu-vertical img {
-  width: 150px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
+.menu-vertical, .menu-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .menu-horizontal {
-  display: flex;
-  gap: 10px;
+  flex-direction: row;
   overflow-x: auto;
-  scroll-behavior: smooth;
-}
-
-.menu-horizontal img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .menu-horizontal::-webkit-scrollbar {
   display: none;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: center;
+}
+
+.menu-item img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.menu-item p {
+  margin: 5px 0;
+}
+
+.menu-item button {
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.menu-item button:hover {
+  background-color: #e84141;
 }
