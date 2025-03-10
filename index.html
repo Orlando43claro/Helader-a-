@@ -1,101 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heladería Delicias</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heladería Delicias</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Encabezado -->
-  <header>
-    <h1>Heladería Delicias</h1>
-  </header>
+    <header>
+        <div class="header-container">
+            <img src="https://i.ibb.co/mmdP2Pb/Ice-Cream-dessert-02.jpg" alt="Icono de helado" class="icono">
+            <h3><span>Delicias</span></h3>
+            <nav class="carrito-container">
+                <img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" alt="Carrito de compras" class="carrito" aria-label="Carrito de compras">
+                <span id="carrito-count">0</span>
+            </nav>
+        </div>
+    </header>
 
-  <!-- Carrusel -->
-  <section class="carousel">
-    <h2>Carrusel de Helados</h2>
-    <div class="carousel-container">
-      <img src="1.jpg" alt="Imagen 1">
-      <img src="2.jpg" alt="Imagen 2">
-      <img src="3.jpeg" alt="Imagen 3">
-      <img src="4.jpg" alt="Imagen 4">
-      <img src="5.jpg" alt="Imagen 5">
+    <main>
+        <section class="scroll">
+            <h2 class="section-title">Galería de Helados</h2>
+            <div class="scroll-container">
+                <article class="scroll-item producto" data-name="Helado Mixto" data-price="7000">
+                    <img src="https://i.ibb.co/tMTWkZRK/helados.webp" alt="Helado Mixto" loading="lazy">
+                    <p>Helado Mixto - $7.000</p>
+                    <button class="agregar-carrito">Añadir al carrito</button>
+                </article>
+                <article class="scroll-item producto" data-name="Helado Tropical" data-price="8500">
+                    <img src="https://i.ibb.co/p6pYG6Vq/helados-en-republica-dominicana.jpg" alt="Helado Tropical" loading="lazy">
+                    <p>Helado Tropical - $8.500</p>
+                    <button class="agregar-carrito">Añadir al carrito</button>
+                </article>
+                <article class="scroll-item producto" data-name="Helado Crema" data-price="6000">
+                    <img src="https://i.ibb.co/2GRW9hB/images.jpg" alt="Helado Crema" loading="lazy">
+                    <p>Helado Crema - $6.000</p>
+                    <button class="agregar-carrito">Añadir al carrito</button>
+                </article>
+                <article class="scroll-item producto" data-name="Helado Especial" data-price="9000">
+                    <img src="https://i.ibb.co/xKpYZQWL/16267631076813.jpg" alt="Helado Especial" loading="lazy">
+                    <p>Helado Especial - $9.000</p>
+                    <button class="agregar-carrito">Añadir al carrito</button>
+                </article>
+            </div>
+        </section>
+
+        <section class="menu">
+            <h2 class="section-title">Menú de Helados</h2>
+            <ul>
+                <li class="menu-item producto" data-name="Helado Vainilla" data-price="5000">
+                    <article>
+                        <img src="https://i.ibb.co/5gLTkYVL/helado.jpg" alt="Helado Vainilla" loading="lazy">
+                        <div class="menu-item-info">
+                            <p class="menu-item-name">Helado Vainilla</p>
+                            <p class="menu-item-price">$5.000</p>
+                        </div>
+                        <button class="agregar-carrito">Añadir al carrito</button>
+                    </article>
+                </li>
+                <li class="menu-item producto" data-name="Helado Fresa" data-price="6000">
+                    <article>
+                        <img src="https://i.ibb.co/JwLvcPfZ/copa-de-helado-linea-canada.jpg" alt="Helado Fresa" loading="lazy">
+                        <div class="menu-item-info">
+                            <p class="menu-item-name">Helado Fresa</p>
+                            <p class="menu-item-price">$6.000</p>
+                        </div>
+                        <button class="agregar-carrito">Añadir al carrito</button>
+                    </article>
+                </li>
+                <li class="menu-item producto" data-name="Copa Helada" data-price="8000">
+                    <article>
+                        <img src="https://i.ibb.co/jZ1YkKjq/descarga.jpg" alt="Copa Helada" loading="lazy">
+                        <div class="menu-item-info">
+                            <p class="menu-item-name">Copa Helada</p>
+                            <p class="menu-item-price">$8.000</p>
+                        </div>
+                        <button class="agregar-carrito">Añadir al carrito</button>
+                    </article>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <div id="carrito-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Carrito de Compras</h2>
+            <ul id="carrito-items">
+            </ul>
+            <h3>Detalles de Entrega</h3>
+            <form id="direccion-form">
+                <label for="nombre-cliente">Nombre del Cliente:</label>
+                <input type="text" id="nombre-cliente" required>
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" required>
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" required>
+            </form>
+            <button id="comprar-whatsapp">Comprar por WhatsApp</button>
+        </div>
     </div>
-  </section>
 
- <!-- Menú de Helados -->
-<section class="menu">
-  <h2>Menú de Helados</h2>
-  <div class="menu-container">
-    <!-- Primera fila -->
-    <div class="menu-row">
-      <div class="menu-item">
-        <img src="1.jpg" alt="Helado Uno">
-        <p>Helado Uno</p>
-        <p>$5.000</p>
-        <button onclick="addToCart('Helado Uno', 5000)">Añadir al Carrito</button>
-      </div>
-      <div class="menu-item">
-        <img src="4.jpg" alt="Helado Cuatro">
-        <p>Helado Cuatro</p>
-        <p>$6.000</p>
-        <button onclick="addToCart('Helado Cuatro', 6000)">Añadir al Carrito</button>
-      </div>
-      <div class="menu-item">
-        <img src="7.jpg" alt="Helado Siete">
-        <p>Helado Siete</p>
-        <p>$7.000</p>
-        <button onclick="addToCart('Helado Siete', 7000)">Añadir al Carrito</button>
-      </div>
-    </div>
-
-    <!-- Segunda fila -->
-    <div class="menu-row">
-      <div class="menu-item">
-        <img src="2.jpg" alt="Helado Dos">
-        <p>Helado Dos</p>
-        <p>$5.500</p>
-        <button onclick="addToCart('Helado Dos', 5500)">Añadir al Carrito</button>
-      </div>
-      <div class="menu-item">
-        <img src="5.jpg" alt="Helado Cinco">
-        <p>Helado Cinco</p>
-        <p>$6.500</p>
-        <button onclick="addToCart('Helado Cinco', 6500)">Añadir al Carrito</button>
-      </div>
-      <div class="menu-item">
-        <img src="8.jpg" alt="Helado Ocho">
-        <p>Helado Ocho</p>
-        <p>$7.500</p>
-        <button onclick="addToCart('Helado Ocho', 7500)">Añadir al Carrito</button>
-      </div>
-    </div>
-
-    <!-- Tercera fila -->
-    <div class="menu-row">
-      <div class="menu-item">
-        <img src="3.jpg" alt="Helado Tres">
-        <p>Helado Tres</p>
-        <p>$6.000</p>
-        <button onclick="addToCart('Helado Tres', 6000)">Añadir al Carrito</button>
-      </div>
-      <div class="menu-item">
-        <img src="6.jpg" alt="Helado Seis">
-        <p>Helado Seis</p>
-        <p>$7.000</p>
-        <button onclick="addToCart('Helado Seis', 7000)">Añadir al Carrito</button>
-      </div>
-      <div class="menu-item">
-        <img src="9.jpg" alt="Helado Nueve">
-        <p>Helado Nueve</p>
-        <p>$8.000</p>
-        <button onclick="addToCart('Helado Nueve', 8000)">Añadir al Carrito</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
