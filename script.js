@@ -1,85 +1,79 @@
-// --------------------
-// Funciones del Carrito
-// --------------------
+const carrito = [];
+const carritoCount = document.getElementById('carrito-count');
+const botonesAgregar = document.querySelectorAll('.agregar-carrito');
+const carritoModal = document.getElementById('carrito-modal');
+const carritoItems = document.getElementById('carrito-items');
+const comprarWhatsapp = document.getElementById('comprar-whatsapp');
+const cerrarModal = document.querySelector('.close');
 
-// Función para añadir un producto al carrito
-function addToCart(name, price) {
-  // Recuperamos el carrito actual desde Local Storage
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+botonesAgregar.forEach(boton => {
+    boton.addEventListener('click', (event) => {
+        const producto = event.target.closest('.producto');
+        if (producto) {
+            const nombre = producto.dataset.name;
+            const precio = parseInt(producto.dataset.price);
 
-  // Añadimos el nuevo producto al carrito
-  cart.push({ name, price });
-
-  // Guardamos el carrito actualizado en Local Storage
-  localStorage.setItem('cart', JSON.stringify(cart));
-
-  // Alertamos al usuario
-  alert(`${name} ha sido añadido al carrito.`);
-}
-
-// Función para actualizar el contador del carrito en tiempo real
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  document.getElementById('carrito-count').innerText = cart.length;
-}
-
-// Inicializa el contador del carrito al cargar la página
-document.addEventListener('DOMContentLoaded', updateCartCount);
-
-// --------------------
-// Funciones del Carrusel
-// --------------------
-
-// Seleccionamos el contenedor del carrusel
-const carousel = document.querySelector('.carousel-container');
-let scrollPosition = 0; // Posición inicial del scroll
-const scrollStep = 300; // Cantidad de píxeles para desplazarse cada vez
-const scrollInterval = 3000; // Intervalo de tiempo entre desplazamientos
-
-// Función para desplazar automáticamente el carrusel
-function autoScrollCarousel() {
-  scrollPosition += scrollStep;
-  if (scrollPosition >= carousel.scrollWidth) {
-    scrollPosition = 0; // Reinicia el scroll al principio
-  }
-  carousel.scrollTo({
-    left: scrollPosition,
-    behavior: 'smooth',
-  });
-}
-
-// Activa el desplazamiento automático del carrusel
-setInterval(autoScrollCarousel, scrollInterval);
-
-// Función para desplazar el carrusel manualmente
-function scrollCarousel(direction) {
-  if (direction === 'prev') {
-    scrollPosition -= scrollStep;
-    if (scrollPosition < 0) {
-      scrollPosition = carousel.scrollWidth - carousel.offsetWidth; // Va al final
-    }
-  } else if (direction === 'next') {
-    scrollPosition += scrollStep;
-    if (scrollPosition >= carousel.scrollWidth) {
-      scrollPosition = 0; // Reinicia al principio
-    }
-  }
-  carousel.scrollTo({
-    left: scrollPosition,
-    behavior: 'smooth',
-  });
-}
-
-// --------------------
-// Eventos de Botones del Carrusel
-// --------------------
-
-// Botón de retroceso
-document.querySelector('.carousel-btn.prev').addEventListener('click', () => {
-  scrollCarousel('prev');
+            carrito.push({ nombre, precio });
+            actualizarCarrito();
+        }
+    });
 });
 
-// Botón de avance
-document.querySelector('.carousel-btn.next').addEventListener('click', () => {
-  scrollCarousel('next');
+function actualizarCarrito() {
+    carritoCount.textContent = carrito.length;
+    mostrarCarrito();
+}
+
+function actualizarTotalCarrito() {
+    let total = 0;
+    carrito.forEach(producto => {
+        total += producto.precio;
+    });
+    const totalElement = document.getElementById('total-carrito');
+    if (!totalElement) {
+        const totalElement = document.createElement('p');
+        totalElement.id = 'total-carrito';
+        carritoModal.querySelector('ul').insertAdjacentElement('afterend', totalElement);
+    }
+    totalElement.textContent = `Total: $${total}`;
+}
+
+function mostrarCarrito() {
+    carritoItems.innerHTML = '';
+    carrito.forEach(producto => {
+        const li = document.createElement('li');
+        li.textContent = `${producto.nombre} - $${producto.precio}`;
+        carritoItems.appendChild(li);
+    });
+    actualizarTotalCarrito();
+}
+
+document.querySelector('.carrito').addEventListener('click', () => {
+    carritoModal.style.display = 'block';
+    mostrarCarrito();
+});
+
+cerrarModal.addEventListener('click', () => {
+    carritoModal.style.display = 'none';
+});
+
+comprarWhatsapp.addEventListener('click', () => {
+    const nombreCliente = document.getElementById('nombre-cliente').value;
+    const direccion = document.getElementById('direccion').value;
+    const telefono = document.getElementById('telefono').value;
+
+    if (!nombreCliente || !direccion || !telefono) {
+        alert('Por favor, ingresa el nombre, la dirección y el teléfono.');
+        return;
+    }
+
+    let mensaje = 'Pedido de Helados Delicias:\n';
+    mensaje += `Nombre del Cliente: ${nombreCliente}\n`;
+    carrito.forEach(producto => {
+        mensaje += `- ${producto.nombre} - $${producto.precio}\n`;
+    });
+    mensaje += `\nDirección: ${direccion}\nTeléfono: ${telefono}`;
+
+    const mensajeWhatsApp = encodeURIComponent(mensaje);
+    window.location.href = `https://wa.me/+573155445183?text=${mensajeWhatsApp}`;
 });
