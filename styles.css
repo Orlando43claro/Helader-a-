@@ -164,6 +164,7 @@ header h3 span {
     font-size: 1em;
     color: #666;
 }
+
 /* Estilos para el botón */
 .menu-item button.agregar-carrito,
 .scroll-item button.agregar-carrito {
@@ -296,4 +297,142 @@ header h3 span {
     font-weight: bold;
     margin-top: 10px;
     text-align: right;
+}
+
+/* Estilos para el modal de mensaje */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    position: relative;
+    border-radius: 8px;
+}
+
+.close,
+.close-mensaje {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus,
+.close-mensaje:hover,
+.close-mensaje:focus {
+    color: black;
+    text-decoration: none;
+}
+
+
+
+addEventListener('click', () => {
+    modalMensaje.style.display = 'none';
+});
+
+botonesAgregar.forEach(boton => {
+    boton.addEventListener('click', (event) => {
+        const producto = event.target.closest('.producto');
+        if (producto) {
+            const nombre = producto.dataset.name;
+            const precio = parseInt(producto.dataset.price);
+
+            carrito.push({ nombre, precio });
+            actualizarCarrito();
+        }
+    });
+});
+
+function actualizarCarrito() {
+    carritoCount.textContent = carrito.length;
+    mostrarCarrito();
+}
+
+function actualizarTotalCarrito() {
+    let total = 0;
+    carrito.forEach(producto => {
+        total += producto.precio;
+    });
+    const totalElement = document.getElementById('total-carrito');
+    if (!totalElement) {
+        const totalElement = document.createElement('p');
+        totalElement.id = 'total-carrito';
+        carritoModal.querySelector('ul').insertAdjacentElement('afterend', totalElement);
+    }
+    totalElement.textContent = `Total: $${total}`;
+    return total; // Devolvemos el total
+}
+
+function mostrarCarrito() {
+    carritoItems.innerHTML = '';
+    if (carrito.length === 0) {
+        carritoItems.innerHTML = '<li>El carrito está vacío.</li>'; // Mostrar mensaje de carrito vacío
+        const totalElement = document.getElementById('total-carrito');
+        if (totalElement) {
+            totalElement.textContent = ''; // Limpiar el total si el carrito está vacío
+        }
+        return;
+    }
+    carrito.forEach(producto => {
+        const li = document.createElement('li');
+        li.textContent = `${producto.nombre} - $${producto.precio}`;
+        carritoItems.appendChild(li);
+    });
+    actualizarTotalCarrito();
+}
+
+document.querySelector('.carrito').addEventListener('click', () => {
+    carritoModal.style.display = 'block';
+    mostrarCarrito();
+});
+
+cerrarModal.addEventListener('click', () => {
+    carritoModal.style.display = 'none';
+});
+
+comprarWhatsapp.addEventListener('click', () => {
+    const nombreCliente = document.getElementById('nombre-cliente').value;
+    const direccion = document.getElementById('direccion').value;
+    const telefono = document.getElementById('telefono').value;
+    const total = actualizarTotalCarrito(); // Obtener el total
+
+    if (!nombreCliente || !direccion || !telefono) {
+        mostrarMensaje('Por favor, ingresa todos los campos.');
+        return;
+    }
+
+    let mensaje = 'Pedido de Helados Delicias:\n';
+    mensaje += `Nombre del Cliente: ${nombreCliente}\n`;
+    carrito.forEach(producto => {
+        mensaje += `- ${producto.nombre} - $${producto.precio}\n`;
+    });
+    mensaje += `\nTotal: $${total}\n`; // Agregar el total al mensaje
+    mensaje += `\nDirección: ${direccion}\nTeléfono: ${telefono}`;
+
+    const mensajeWhatsApp = encodeURIComponent(mensaje);
+    window.location.href = `https://wa.me/+573155445183?text=${mensajeWhatsApp}`;
+
+    // Vaciar el carrito después de realizar el pedido
+    carrito.length = 0;
+    actualizarCarrito();
+});
+
+function mostrarMensaje(mensaje) {
+    document.getElementById('mensaje-texto').textContent = mensaje;
+    modalMensaje.style.display = 'block';
 }
