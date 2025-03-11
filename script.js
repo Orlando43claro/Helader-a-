@@ -5,6 +5,20 @@ const carritoModal = document.getElementById('carrito-modal');
 const carritoItems = document.getElementById('carrito-items');
 const comprarWhatsapp = document.getElementById('comprar-whatsapp');
 const cerrarModal = document.querySelector('.close');
+const modalMensaje = document.createElement('div'); // Crear modal de mensaje
+modalMensaje.classList.add('modal');
+modalMensaje.innerHTML = `
+    <div class="modal-content">
+        <span class="close-mensaje">&times;</span>
+        <p id="mensaje-texto"></p>
+    </div>
+`;
+document.body.appendChild(modalMensaje);
+const cerrarMensaje = modalMensaje.querySelector('.close-mensaje');
+
+cerrarMensaje.addEventListener('click', () => {
+    modalMensaje.style.display = 'none';
+});
 
 botonesAgregar.forEach(boton => {
     boton.addEventListener('click', (event) => {
@@ -36,10 +50,19 @@ function actualizarTotalCarrito() {
         carritoModal.querySelector('ul').insertAdjacentElement('afterend', totalElement);
     }
     totalElement.textContent = `Total: $${total}`;
+    return total; // Devolvemos el total
 }
 
 function mostrarCarrito() {
     carritoItems.innerHTML = '';
+    if (carrito.length === 0) {
+        carritoItems.innerHTML = '<li>El carrito está vacío.</li>'; // Mostrar mensaje de carrito vacío
+        const totalElement = document.getElementById('total-carrito');
+        if (totalElement) {
+            totalElement.textContent = ''; // Limpiar el total si el carrito está vacío
+        }
+        return;
+    }
     carrito.forEach(producto => {
         const li = document.createElement('li');
         li.textContent = `${producto.nombre} - $${producto.precio}`;
@@ -61,9 +84,10 @@ comprarWhatsapp.addEventListener('click', () => {
     const nombreCliente = document.getElementById('nombre-cliente').value;
     const direccion = document.getElementById('direccion').value;
     const telefono = document.getElementById('telefono').value;
+    const total = actualizarTotalCarrito(); // Obtener el total
 
     if (!nombreCliente || !direccion || !telefono) {
-        alert('Por favor, ingresa el nombre, la dirección y el teléfono.');
+        mostrarMensaje('Por favor, ingresa todos los campos.');
         return;
     }
 
@@ -72,8 +96,18 @@ comprarWhatsapp.addEventListener('click', () => {
     carrito.forEach(producto => {
         mensaje += `- ${producto.nombre} - $${producto.precio}\n`;
     });
+    mensaje += `\nTotal: $${total}\n`; // Agregar el total al mensaje
     mensaje += `\nDirección: ${direccion}\nTeléfono: ${telefono}`;
 
     const mensajeWhatsApp = encodeURIComponent(mensaje);
     window.location.href = `https://wa.me/+573155445183?text=${mensajeWhatsApp}`;
+
+    // Vaciar el carrito después de realizar el pedido
+    carrito.length = 0;
+    actualizarCarrito();
 });
+
+function mostrarMensaje(mensaje) {
+    document.getElementById('mensaje-texto').textContent = mensaje;
+    modalMensaje.style.display = 'block';
+}
